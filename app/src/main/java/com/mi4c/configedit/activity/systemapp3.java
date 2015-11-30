@@ -1,16 +1,15 @@
 package com.mi4c.configedit.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,29 +18,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mi4c.configedit.R;
 import com.mi4c.configedit.utils.Su_dos;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,18 +37,21 @@ public class systemapp3 extends AppCompatActivity {
     private PackageManager pm;
     private static List<AppInfo> List_enable = new ArrayList<AppInfo>();
     private static List<AppInfo> List_disable = new ArrayList<AppInfo>();
-    private static List<Boolean> isChecklist = new ArrayList<>();
     private ProgressDialog dialog;
-    private List<Integer> remove_index = new ArrayList<>();
-    private static List<String> rm_applist = new ArrayList<>();
     private ViewPager mViewPager;
+    private final String DATABASE="database";
+    private final String NOMORE="nomore";
 
+    private int nomore=0;
+    SharedPreferences sp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systemapp3);
-        ImageLoaderConfiguration configuration = ImageLoaderConfiguration.createDefault(this);
-        ImageLoader.getInstance().init(configuration);
+        sp = getSharedPreferences(DATABASE,
+                Activity.MODE_PRIVATE);
+        nomore=sp.getInt(NOMORE,0);
+        // 获取Editor对象
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         new Thread(new Runnable() {
@@ -109,6 +98,7 @@ public class systemapp3 extends AppCompatActivity {
                     recyclerView1 = new RecyclerView(systemapp3.this);
                     recyclerView2 = new RecyclerView(systemapp3.this);
                     recyclerView1.setHasFixedSize(true);
+                    recyclerView2.setHasFixedSize(true);
                     LinearLayoutManager manager = new LinearLayoutManager(systemapp3.this);
                     manager.setOrientation(1);//列表：0横向 1纵向
                     LinearLayoutManager manager2 = new LinearLayoutManager(systemapp3.this);
@@ -128,16 +118,28 @@ public class systemapp3 extends AppCompatActivity {
                     mViewPager.setAdapter(adapter2);
                     TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
                     tabLayout.setupWithViewPager(mViewPager);
-                    AlertDialog.Builder builder = new AlertDialog.Builder(systemapp3.this);
-                    builder.setTitle("警告");
-                    builder.setMessage("本功能可以冻结所有系统程序，所以如果你不确定冻结的应用是否会影响系统的正常使用，请慎用！");
-                    builder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.create().show();
+                    if(nomore==0){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(systemapp3.this);
+                        builder.setCancelable(false);
+                        builder.setTitle("警告");
+                        builder.setMessage("本功能可以冻结所有系统程序，所以如果你不确定冻结的应用是否会影响系统的正常使用，请慎用！");
+                        builder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNeutralButton(getResources().getString(R.string.nomore), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SharedPreferences.Editor editor = sp.edit();
+                                editor.putInt(NOMORE,1);
+                                editor.commit();
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.create().show();
+                    }
                     break;
                 default:
                     break;
@@ -179,7 +181,7 @@ public class systemapp3 extends AppCompatActivity {
         }
 
         @Override
-        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, final int i) {
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
             View view = View.inflate(viewGroup.getContext(), R.layout.adapter_systemapp, null);
             ViewHolder holder = new ViewHolder(view);
             return holder;
@@ -187,28 +189,30 @@ public class systemapp3 extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
+
             viewHolder.mText.setText(appList.get(i).getAppLabel());
             viewHolder.icon.setImageDrawable(appList.get(i).getAppIcon());
             viewHolder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    final int z= viewHolder.getLayoutPosition();
                     AlertDialog.Builder builder = new AlertDialog.Builder(systemapp3.this);
-                    builder.setIcon(appList.get(i).getAppIcon());
+                    builder.setCancelable(false);
+                    builder.setIcon(appList.get(z).getAppIcon());
                     builder.setTitle(type == 1 ? "冻结确认" : "解冻确认");
-                    builder.setMessage((type == 1 ? "确认冻结" : "确认解冻") + "“" + appList.get(i).getAppLabel() + "”？" + (type == 1 ? "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。" : "解冻后应用将回到桌面，可以在左侧列表重新冻结。"));
+                    builder.setMessage((type == 1 ? "确认冻结" : "确认解冻") + "“" + appList.get(z).getAppLabel() + "”？" + (type == 1 ? "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。" : "解冻后应用将回到桌面，可以在左侧列表重新冻结。"));
                     builder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             Su_dos su_dos = new Su_dos();
-                            su_dos.app_enable(type != 1, appList.get(i).getPkgName());
+                            su_dos.app_enable(type != 1, appList.get(z).getPkgName());
                             if (type == 1) {
-                                adapter2.addData(appList.get(i));
+                                adapter2.addData(appList.get(z));
                             } else {
-                                adapter1.addData(appList.get(i));
+                                adapter1.addData(appList.get(z));
                             }
-                            deleteData(i);
-
+                            deleteData(z);
                         }
                     });
                     builder.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {

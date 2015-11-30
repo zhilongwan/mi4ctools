@@ -1,7 +1,9 @@
 package com.mi4c.configedit.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,11 +47,31 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
     private RelativeLayout a57_p;
     private RelativeLayout gpu_p;
     private OutputConfigFile create_config;
+    private SharedPreferences sp;
+    private final String DATABASE="cs_config";
+    private final String BIG_BTN1="big_btn1";
+    private final String BIG_BTN2="big_btn2";
+    private final String BIG_BTN3="big_btn3";
+    private final String BIG_BTN4="big_btn4";
+    private final String BIG_BTN5="big_btn5";
+    private final String CPU0="cpu0";
+    private final String CPU1="cpu1";
+    private final String CPU2="cpu2";
+    private final String CPU3="cpu3";
+    private final String CPU4="cpu4";
+    private final String CPU5="cpu5";
+    private final String SEEKBAR1="seekbar1";
+    private final String SEEKBAR2="seekbar2";
+    private final String SEEKBAR3="seekbar3";
+    private final int cpu1=1820;
+    private final int cpu2=1440;
+    private final int gpu1=600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom);
+        sp=getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
         create_config = new OutputConfigFile(this);
         aSwitch1 = (Switch) findViewById(R.id.switch1);
         aSwitch2 = (Switch) findViewById(R.id.switch2);
@@ -75,9 +97,64 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
         gpu_p = (RelativeLayout) findViewById(R.id.rl_main3);
         gpu = (TextView) findViewById(R.id.gpu_manager);
         mEvent();
-        aSwitch1.setChecked(true);
+        initUI();
     }
-
+    public void saveUI(){
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt(BIG_BTN1,open1.isChecked()?1:0);
+        editor.putInt(BIG_BTN2,open2.isChecked()?1:0);
+        editor.putInt(BIG_BTN3,open3.isChecked()?1:0);
+        editor.putInt(BIG_BTN4,open4.isChecked()?1:0);
+        editor.putInt(BIG_BTN5,open5.isChecked()?1:0);
+        editor.putInt(CPU0,aSwitch1.isChecked()?1:0);
+        editor.putInt(CPU1,aSwitch2.isChecked()?1:0);
+        editor.putInt(CPU2,aSwitch3.isChecked()?1:0);
+        editor.putInt(CPU3,aSwitch4.isChecked()?1:0);
+        editor.putInt(CPU4,aSwitch5.isChecked()?1:0);
+        editor.putInt(CPU5,aSwitch6.isChecked()?1:0);
+        editor.putInt(SEEKBAR1,seekBar1.getProgress());
+        editor.putInt(SEEKBAR2,seekBar2.getProgress());
+        editor.putInt(SEEKBAR3,seekBar3.getProgress());
+        editor.commit();
+    }
+    public void initUI(){
+        if(sp.getInt(BIG_BTN1,0)==1){
+            open1.setChecked(true);
+            if(sp.getInt(CPU0,0)==0){
+                aSwitch1.setChecked(false);
+            }
+            if(sp.getInt(CPU1,0)==0){
+                aSwitch2.setChecked(false);
+            }
+            if(sp.getInt(CPU2,0)==0){
+                aSwitch3.setChecked(false);
+            }
+            if(sp.getInt(CPU3,0)==0){
+                aSwitch4.setChecked(false);
+            }
+        }
+        if(sp.getInt(BIG_BTN2,0)==1){
+            open2.setChecked(true);
+            seekBar1.setProgress(sp.getInt(SEEKBAR1,cpu1));
+        }
+        if(sp.getInt(BIG_BTN3,0)==1){
+            open4.setChecked(true);
+            if(sp.getInt(CPU4,0)==0){
+                aSwitch5.setChecked(false);
+            }
+            if(sp.getInt(CPU5,0)==0){
+                aSwitch6.setChecked(false);
+            }
+        }
+        if(sp.getInt(BIG_BTN4,0)==1){
+            open4.setChecked(true);
+            seekBar2.setProgress(sp.getInt(SEEKBAR2,cpu2));
+        }
+        if(sp.getInt(BIG_BTN5,0)==1){
+            open5.setChecked(true);
+            seekBar3.setProgress(sp.getInt(SEEKBAR3,gpu1));
+        }
+    }
 
     private void mEvent() {
         seekBar1.setProgress(840);
@@ -265,6 +342,7 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.finished:
+                saveUI();
                 final ProgressDialog dialog = ProgressDialog.show(this, null, "请稍后...", true, false);
                 new Handler().postDelayed(new Runnable() {
                     @Override

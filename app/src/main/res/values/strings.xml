@@ -8,6 +8,7 @@
     <string name="s2">确认重启手机？</string>
     <string name="sure">确认</string>
     <string name="no">取消</string>
+    <string name="nomore">不再提示</string>
     <string name="pack">com.miui.securitycenter</string>
     <string-array name="main">
         <item>原版</item>
