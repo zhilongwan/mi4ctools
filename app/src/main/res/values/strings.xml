@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">MI4C Tools</string>
+    <string name="u">/sdcard/Download/data/</string>
+    <string name="n">thermal-engine-8992.conf</string>
+    <string name="t1">当前：系统默认</string>
+    <string name="t2">当前：自定义</string>
+    <string name="s1">在安全中心-权限管理-ROOT权限管理中打开本应用的ROOT权限。</string>
+    <string name="s2">确认重启手机？</string>
+    <string name="sure">确认</string>
+    <string name="no">取消</string>
+    <string name="pack">com.miui.securitycenter</string>
+    <string-array name="main">
+        <item>原版</item>
+        <item>2+2核，A53x2+A57(1440mhz)x2，略微提高A57温度阈值</item>
+        <item>4+1核,a57(1440mhz)，GPU(450mhz)</item>
+        <item>6核,a57(800mhz)，GPU(450mhz),略微降低A57温度阈值</item>
+        <item>gpu(300mhz)</item>
+        <item>4核，A53*4，略微降低GPU温度阈值</item>
+        <item>6核，A53(1240mhz)*4+A57(1240mhz),gpu(367mhz)</item>
+    </string-array>
+    <string name="appid">9c3b9b058b39d971</string>
+    <string name="appSecret">6c86b43c444b3631</string>
+    <string name="title_activity_welcome">welcome</string>
+    <string name="title_activity_systemapp">系统程序冻结器</string>
+    <string name="title_activity_main3">CPU GPU控制器</string>
+    <string name="title_activity_systemapp2">systemapp2</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_systemapp3">systemapp3</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string-array name="a53">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+    <string-array name="a57">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+</resources>
