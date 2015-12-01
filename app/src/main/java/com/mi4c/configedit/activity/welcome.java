@@ -57,13 +57,11 @@ public class welcome extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onShowSuccess() {
-                        Log.i("YoumiAdDemo", "开屏展示成功");
                         findViewById(R.id.main).setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onShowFailed() {
-                        Log.i("YoumiAdDemo", "开屏展示失败。");
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -76,12 +74,12 @@ public class welcome extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onSpotClosed() {
-                        Log.i("YoumiAdDemo", "开屏关闭。");
+
                     }
 
                     @Override
                     public void onSpotClick(boolean isWebPath) {
-                        Log.i("YoumiAdDemo", "插屏点击");
+
                     }
                 });
         splashView.setShowReciprocal(false);

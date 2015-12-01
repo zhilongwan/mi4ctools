@@ -2,12 +2,18 @@
     <string name="app_name">MI4C Tools</string>
     <string name="u">/sdcard/Download/data/</string>
     <string name="n">thermal-engine-8992.conf</string>
+    <string name="n2">wlan_mac.bin</string>
     <string name="t1">当前：系统默认</string>
     <string name="t2">当前：自定义</string>
     <string name="s1">在安全中心-权限管理-ROOT权限管理中打开本应用的ROOT权限。</string>
     <string name="s2">确认重启手机？</string>
+    <string name="s3">确认重启至Recovery？</string>
+    <string name="s4">修改Wifi MAC地址完成，重启wifi后生效。</string>
+    <string name="s5">当前系统为MIUI系统，修改后重启才能生效，是否立刻重启？</string>
     <string name="sure">确认</string>
     <string name="no">取消</string>
+    <string name="ok">好的</string>
+    <string name="reboot">立刻重启</string>
     <string name="nomore">不再提示</string>
     <string name="pack">com.miui.securitycenter</string>
     <string-array name="main">
@@ -29,22 +35,36 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_systemapp3">systemapp3</string>
     <string name="title_activity_main">MainActivity</string>
-    <string-array name="a53">
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
-    <string-array name="a57">
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-        <item></item>
-    </string-array>
+    <integer-array name="a53">
+        <item>0</item>
+        <item>76</item>
+        <item>210</item>
+        <item>288</item>
+        <item>406</item>
+        <item>480</item>
+        <item>576</item>
+        <item>864</item>
+        <item>1056</item>
+    </integer-array>
+    <integer-array name="a57">
+        <item>0</item>
+        <item>96</item>
+        <item>249</item>
+        <item>384</item>
+        <item>480</item>
+        <item>576</item>
+        <item>864</item>
+        <item>960</item>
+        <item>1056</item>
+        <item>1248</item>
+        <item>1305</item>
+        <item>1436</item>
+    </integer-array>
+    <integer-array name="gpu">
+        <item>0</item>
+        <item>67</item>
+        <item>150</item>
+        <item>190</item>
+        <item>300</item>
+    </integer-array>
 </resources>

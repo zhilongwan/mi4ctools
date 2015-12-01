@@ -25,20 +25,24 @@ public class ota extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_ota);
     }
 
+    private final String TXT1 = "系统正在被狂揍...";
+    private final String TXT2 = "系统已经被搞定了，去重新检查一下更新吧~~";
+    private final String TXT3 = "确定";
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ota:
                 Su_dos su_dos2 = new Su_dos();
                 su_dos2.ota();
-                final ProgressDialog dialog = ProgressDialog.show(this, null, "系统正在被狂揍...", true, false);
+                final ProgressDialog dialog = ProgressDialog.show(this, null, TXT1, true, false);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         dialog.dismiss();
                         AlertDialog.Builder builder = new AlertDialog.Builder(ota.this);  //先得到构造器
-                        builder.setMessage("系统已经被搞定了，去重新检查一下更新吧~~"); //设置内容
-                        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() { //设置确定按钮
+                        builder.setMessage(TXT2); //设置内容
+                        builder.setPositiveButton(TXT3, new DialogInterface.OnClickListener() { //设置确定按钮
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss(); //关闭dialog

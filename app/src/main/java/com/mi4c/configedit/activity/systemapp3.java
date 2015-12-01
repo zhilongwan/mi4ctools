@@ -39,18 +39,21 @@ public class systemapp3 extends AppCompatActivity {
     private static List<AppInfo> List_disable = new ArrayList<AppInfo>();
     private ProgressDialog dialog;
     private ViewPager mViewPager;
-    private final String DATABASE="database";
-    private final String NOMORE="nomore";
-
-    private int nomore=0;
+    private final String DATABASE = "database";
+    private final String NOMORE = "nomore";
+    private final String WAIT = "正在讀取系統程序列表...";
+    private final String WARNING = "警告";
+    private final String WARNING_TXT = "本功能可以冻结所有系统程序，所以如果你不确定冻结的应用是否会影响系统的正常使用，请慎用！";
+    private int nomore = 0;
     SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_systemapp3);
         sp = getSharedPreferences(DATABASE,
                 Activity.MODE_PRIVATE);
-        nomore=sp.getInt(NOMORE,0);
+        nomore = sp.getInt(NOMORE, 0);
         // 获取Editor对象
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,7 +63,7 @@ public class systemapp3 extends AppCompatActivity {
                 queryFilterAppInfo();
             }
         }).start();
-        dialog = ProgressDialog.show(this, null, "正在讀取系統程序列表...", true, false);
+        dialog = ProgressDialog.show(this, null, WAIT, true, false);
     }
 
     // 根据查询条件，查询特定的ApplicationInfo
@@ -118,11 +121,11 @@ public class systemapp3 extends AppCompatActivity {
                     mViewPager.setAdapter(adapter2);
                     TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
                     tabLayout.setupWithViewPager(mViewPager);
-                    if(nomore==0){
+                    if (nomore == 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(systemapp3.this);
                         builder.setCancelable(false);
-                        builder.setTitle("警告");
-                        builder.setMessage("本功能可以冻结所有系统程序，所以如果你不确定冻结的应用是否会影响系统的正常使用，请慎用！");
+                        builder.setTitle(WARNING);
+                        builder.setMessage(WARNING_TXT);
                         builder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -133,7 +136,7 @@ public class systemapp3 extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 SharedPreferences.Editor editor = sp.edit();
-                                editor.putInt(NOMORE,1);
+                                editor.putInt(NOMORE, 1);
                                 editor.commit();
                                 dialog.dismiss();
                             }
@@ -187,6 +190,15 @@ public class systemapp3 extends AppCompatActivity {
             return holder;
         }
 
+        private final String SURE0 = "冻结确认";
+        private final String SURE1 = "解冻确认";
+        private final String SURE2 = "确认冻结";
+        private final String SURE3 = "确认解冻";
+        private final String S1 = "“";
+        private final String S2 = "”？";
+        private final String TXT1 = "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。";
+        private final String TXT2 = "解冻后应用将回到桌面，可以在左侧列表重新冻结。";
+
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
@@ -195,12 +207,12 @@ public class systemapp3 extends AppCompatActivity {
             viewHolder.view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final int z= viewHolder.getLayoutPosition();
+                    final int z = viewHolder.getLayoutPosition();
                     AlertDialog.Builder builder = new AlertDialog.Builder(systemapp3.this);
                     builder.setCancelable(false);
                     builder.setIcon(appList.get(z).getAppIcon());
-                    builder.setTitle(type == 1 ? "冻结确认" : "解冻确认");
-                    builder.setMessage((type == 1 ? "确认冻结" : "确认解冻") + "“" + appList.get(z).getAppLabel() + "”？" + (type == 1 ? "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。" : "解冻后应用将回到桌面，可以在左侧列表重新冻结。"));
+                    builder.setTitle(type == 1 ? SURE0 : SURE1);
+                    builder.setMessage((type == 1 ? SURE2 : SURE3) + S1 + appList.get(z).getAppLabel() + S2 + (type == 1 ? TXT1 : TXT2));
                     builder.setPositiveButton(getResources().getString(R.string.sure), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -235,11 +247,12 @@ public class systemapp3 extends AppCompatActivity {
             public TextView mText;
             public View view;
             public ImageView icon;
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 view = itemView;
                 mText = (TextView) itemView.findViewById(R.id.text);
-                icon= (ImageView) itemView.findViewById(R.id.icon);
+                icon = (ImageView) itemView.findViewById(R.id.icon);
             }
         }
     }
@@ -280,9 +293,12 @@ public class systemapp3 extends AppCompatActivity {
         public void restoreState(Parcelable arg0, ClassLoader arg1) {
         }
 
+        private final String TXT1 = "系統程序";
+        private final String TXT2 = "已冻结程序";
+
         @Override
         public CharSequence getPageTitle(int position) {
-            return position == 0 ? "系統程序" : "已冻结程序";
+            return position == 0 ? TXT1 : TXT2;
         }
 
         @Override

@@ -33,8 +33,31 @@ public class Su_dos {
         }
     }
 
+    public void recovery() {
+        DataOutputStream dos = null;
+        try {
+            Process p = Runtime.getRuntime().exec("su");
+            dos = new DataOutputStream(p.getOutputStream());
+            dos.writeBytes("reboot recovery\n");
+            dos.flush();
+            p.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private final String OTA_PATH = "/sdcard/Download/data/otad.log";
+
     public void ota() {
-        File file = new File("/sdcard/Download/data/otad.log");
+        File file = new File(OTA_PATH);
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -78,6 +101,57 @@ public class Su_dos {
             dos.writeBytes("cp /sdcard/Download/data/thermal-engine-8992.conf /system/etc\n");
             dos.flush();
             dos.writeBytes("chmod 644 /system/etc/thermal-engine-8992.conf\n");
+            dos.flush();
+            dos.writeBytes("exit\n");
+            dos.flush();
+            p.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void mac() {
+        DataOutputStream dos = null;
+        try {
+            Process p = Runtime.getRuntime().exec("su");
+            dos = new DataOutputStream(p.getOutputStream());
+            dos.writeBytes("mount -o remount /persist\n");
+            dos.flush();
+            dos.writeBytes("cp /sdcard/Download/data/wlan_mac.bin /persist\n");
+            dos.flush();
+            dos.writeBytes("chmod 0555 /persist/wlan_mac.bin\n");
+            dos.flush();
+            dos.writeBytes("exit\n");
+            dos.flush();
+            p.waitFor();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (dos != null) {
+                try {
+                    dos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    public void rm_mac() {
+        DataOutputStream dos = null;
+        try {
+            Process p = Runtime.getRuntime().exec("su");
+            dos = new DataOutputStream(p.getOutputStream());
+            dos.writeBytes("mount -o remount /persist\n");
+            dos.flush();
+            dos.writeBytes("rm /persist/wlan_mac.bin\n");
             dos.flush();
             dos.writeBytes("exit\n");
             dos.flush();
