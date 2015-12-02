@@ -21,6 +21,8 @@ import android.widget.Toast;
 
 import com.mi4c.configedit.R;
 import com.mi4c.configedit.utils.BuildProperties;
+import com.mi4c.configedit.utils.OutputConfigFile;
+import com.mi4c.configedit.utils.RandomMacAddress;
 import com.mi4c.configedit.utils.Su_dos;
 
 import java.io.File;
@@ -66,7 +68,7 @@ public class main extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    private final String ONLY_MIUI = "此功能仅对MIUI系统开放";
+    private final String ONLY_MIUI = "此功能仅支持MIUI系统";
 
     @Override
     public void onClick(View v) {
@@ -128,7 +130,11 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(main.this, systemapp3.class));
                 break;
             case R.id.mac:
-                CopyAssets(getResources().getString(R.string.u), getResources().getString(R.string.n2));
+                final String mac = RandomMacAddress.getMacAddrWithFormat(":");
+                String mac_txt = mac.replace(":", "");
+                OutputConfigFile create_config = new OutputConfigFile(this);
+                create_config.initDataMac(getResources().getString(R.string.mac0) + mac_txt + "\n" + getResources().getString(R.string.mac1) + mac_txt);
+//                CopyAssets(getResources().getString(R.string.u), getResources().getString(R.string.n2));
                 final Su_dos su_dos = new Su_dos();
                 su_dos.mac();
                 final ProgressDialog wait = ProgressDialog.show(this, null, WAIT, true, false);
@@ -137,9 +143,9 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                     public void run() {
                         wait.dismiss();
                         AlertDialog.Builder builder3 = new AlertDialog.Builder(main.this);
-                        builder3.setMessage(getResources().getString(isMIUI() ? R.string.s5 : R.string.s4));
+                        builder3.setMessage(mac + " " + getResources().getString(isMIUI() ? R.string.s5 : R.string.s4));
                         builder3.setCancelable(false);
-                        builder3.setPositiveButton(getResources().getString(isMIUI() ? R.string.reboot : R.string.ok), new DialogInterface.OnClickListener() {
+                        builder3.setPositiveButton(getResources().getString(isMIUI() ? (R.string.reboot) : (R.string.ok)), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
@@ -169,7 +175,7 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                     public void run() {
                         wait2.dismiss();
                         AlertDialog.Builder builder3 = new AlertDialog.Builder(main.this);
-                        builder3.setMessage(getResources().getString(isMIUI() ? R.string.s5 : R.string.s4));
+                        builder3.setMessage(getResources().getString(isMIUI() ? R.string.s5_default : R.string.s4_default));
                         builder3.setCancelable(false);
                         builder3.setPositiveButton(getResources().getString(isMIUI() ? R.string.reboot : R.string.ok), new DialogInterface.OnClickListener() {
                             @Override

@@ -26,7 +26,11 @@ public class OutputConfigFile {
         String fileName = mContext.getResources().getString(R.string.n);
         writeTxtToFile(config, filePath, fileName);
     }
-
+    public void initDataMac(String config) {
+        String filePath = mContext.getResources().getString(R.string.u);
+        String fileName = mContext.getResources().getString(R.string.mac_n);
+        writeTxtToFile(config, filePath, fileName);
+    }
     // 将字符串写入到文本文件中
     public void writeTxtToFile(String strcontent, String filePath, String fileName) {
         //生成文件夹之后，再生成文件，不然会出错

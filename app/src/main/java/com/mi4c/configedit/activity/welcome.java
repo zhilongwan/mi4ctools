@@ -35,7 +35,7 @@ public class welcome extends Activity implements View.OnClickListener {
                 public void run() {
                     ad();
                 }
-            }, 2000);
+            }, 1000);
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override

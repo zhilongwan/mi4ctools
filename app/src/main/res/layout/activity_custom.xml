@@ -180,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="最高频率"
+                            android:text="升温自动降频（需重启）"
                             android:textSize="16sp" />
 
                         <Switch
@@ -188,7 +188,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:checked="false"
+                            android:checked="true"
                             android:textColor="#777777" />
                     </RelativeLayout>
 
@@ -317,7 +317,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="最高频率"
+                            android:text="升温自动降频（需重启）"
                             android:textSize="16sp" />
 
                         <Switch
@@ -325,7 +325,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:checked="false"
+                            android:checked="true"
                             android:textColor="#777777" />
                     </RelativeLayout>
 
