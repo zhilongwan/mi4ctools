@@ -42,6 +42,16 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_systemapp3">systemapp3</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="ota_path">/sdcard/Download/data/otad.log</string>
+    <string name="su">su</string>
+    <string name="enable">enable</string>
+    <string name="disable">disable</string>
+    <string name="pm">pm</string>
+    <string name="exit">exit\n</string>
+    <string name="rm_persist">rm /persist/wlan_mac.bin\n</string>
+    <string name="mount_persist">mount -o remount /persist\n</string>
+    <string name="cp_persist">cp /sdcard/Download/data/wlan_mac.bin /persist\n</string>
+    <string name="cmod_persist">chmod 0555 /persist/wlan_mac.bin\n</string>
     <integer-array name="a53">
         <item>0</item>
         <item>76</item>

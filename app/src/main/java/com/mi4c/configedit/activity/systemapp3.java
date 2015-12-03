@@ -44,6 +44,14 @@ public class systemapp3 extends AppCompatActivity {
     private final String WAIT = "正在讀取系統程序列表...";
     private final String WARNING = "警告";
     private final String WARNING_TXT = "本功能可以冻结所有系统程序，所以如果你不确定冻结的应用是否会影响系统的正常使用，请慎用！";
+    private final String SURE0 = "冻结确认";
+    private final String SURE1 = "解冻确认";
+    private final String SURE2 = "确认冻结";
+    private final String SURE3 = "确认解冻";
+    private final String S1 = "“";
+    private final String S2 = "”？";
+    private final String TXT1 = "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。";
+    private final String TXT2 = "解冻后应用将回到桌面，可以在左侧列表重新冻结。";
     private int nomore = 0;
     SharedPreferences sp;
 
@@ -190,14 +198,6 @@ public class systemapp3 extends AppCompatActivity {
             return holder;
         }
 
-        private final String SURE0 = "冻结确认";
-        private final String SURE1 = "解冻确认";
-        private final String SURE2 = "确认冻结";
-        private final String SURE3 = "确认解冻";
-        private final String S1 = "“";
-        private final String S2 = "”？";
-        private final String TXT1 = "冻结后应用将从桌面消失且无法启动，可以在右侧已冻结列表恢复。";
-        private final String TXT2 = "解冻后应用将回到桌面，可以在左侧列表重新冻结。";
 
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {

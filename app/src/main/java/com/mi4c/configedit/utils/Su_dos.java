@@ -168,7 +168,6 @@ public class Su_dos {
             }
         }
     }
-
     public void app_enable(boolean enable, String packagename) {
         DataOutputStream dos = null;
         String en = "";

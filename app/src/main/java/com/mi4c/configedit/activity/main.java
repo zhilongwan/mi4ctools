@@ -25,6 +25,9 @@ import com.mi4c.configedit.utils.OutputConfigFile;
 import com.mi4c.configedit.utils.RandomMacAddress;
 import com.mi4c.configedit.utils.Su_dos;
 
+import net.youmi.android.banner.AdSize;
+import net.youmi.android.banner.AdView;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +44,12 @@ public class main extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+        // 实例化广告条
+        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
+// 获取要嵌入广告条的布局
+        LinearLayout adLayout = (LinearLayout) findViewById(R.id.adLayout);
+// 将广告条加入到布局中
+        adLayout.addView(adView);
         RootLL = (LinearLayout) findViewById(R.id.rootll);
         MainLL = (ScrollView) findViewById(R.id.mainll);
         String pkName = this.getPackageName();

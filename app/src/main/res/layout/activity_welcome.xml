@@ -5,6 +5,32 @@
     android:background="#ffffff"
     tools:context="com.mi4c.configedit.activity.welcome">
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="100dp"
+        android:background="#f0ffffff">
+
+        <ImageView
+            android:id="@+id/notouch"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@mipmap/notouch" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="#77ffffff" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notouch"
+            android:layout_centerHorizontal="true"
+            android:text="有广告，别乱点。" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/ad"
@@ -61,20 +87,4 @@
             android:textSize="16sp"
             android:visibility="gone" />
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/not_test"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="#3F81B5"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:text="那个...你不是内测人员耶"
-            android:textColor="#ffffff"
-            android:textSize="16sp" />
-    </LinearLayout>
 </RelativeLayout>

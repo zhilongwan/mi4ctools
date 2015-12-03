@@ -72,6 +72,10 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
     private int[] CPU_A53;
     private int[] CPU_A57;
     private int[] GPU;
+    private int cpu_a53_freq;
+    private int cpu_a57_freq;
+    private boolean cpu_a53_cus = false;
+    private boolean cpu_a57_cus = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +148,8 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             }
         }
         if (sp.getInt(BIG_BTN2, 0) == 1) {
+            cpu_a53_cus = true;
+            cpu_a53_freq = cpu1;
             open2.setChecked(true);
             seekBar1.setProgress(sp.getInt(SEEKBAR1, cpu1));
         }
@@ -157,6 +163,8 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             }
         }
         if (sp.getInt(BIG_BTN4, 0) == 1) {
+            cpu_a57_cus = true;
+            cpu_a57_freq = cpu2;
             open4.setChecked(true);
             seekBar2.setProgress(sp.getInt(SEEKBAR2, cpu2));
         }
@@ -171,9 +179,9 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
         seekBar2.setProgress(1436);
         seekBar3.setProgress(300);
         open1.setText(getResources().getString(R.string.t1));
-        open2.setText(getResources().getString(R.string.t3));
+        open2.setText(getResources().getString(R.string.t1));
         open3.setText(getResources().getString(R.string.t1));
-        open4.setText(getResources().getString(R.string.t3));
+        open4.setText(getResources().getString(R.string.t1));
         open5.setText(getResources().getString(R.string.t1));
         open1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -191,11 +199,11 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    //a53_p.setVisibility(View.VISIBLE);
-                    open2.setText(getResources().getString(R.string.t3));
+                    a53_p.setVisibility(View.VISIBLE);
+                    open2.setText(getResources().getString(R.string.t2));
                 } else {
-                    open2.setText(getResources().getString(R.string.t4));
-                    //a53_p.setVisibility(View.GONE);
+                    open2.setText(getResources().getString(R.string.t1));
+                    a53_p.setVisibility(View.GONE);
                 }
             }
         });
@@ -215,11 +223,11 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    open4.setText(getResources().getString(R.string.t3));
-                    //a57_p.setVisibility(View.VISIBLE);
+                    open4.setText(getResources().getString(R.string.t2));
+                    a57_p.setVisibility(View.VISIBLE);
                 } else {
-                    open4.setText(getResources().getString(R.string.t4));
-                    //a57_p.setVisibility(View.GONE);
+                    open4.setText(getResources().getString(R.string.t1));
+                    a57_p.setVisibility(View.GONE);
                 }
             }
         });
@@ -355,24 +363,17 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
                         //参数都设置完成了，创建并显示出来
                         builder.create().show();
                     }
-                }, 2000);
-                Config config_cpu_perf = new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "43000", "37000", "0", "800000");
-                Config config_cpu_power = new Config("[SS-SKIN-XO-THERM-POWER]", "ss", "1000", "xo_therm_buf", "cluster0", "48000", "40000", "0", "600000");
+                }, 1200);
+                Config config_cpu_perf = open4.isChecked() ?
+                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "2000", "1000", "0", ((seekBar2.getProgress() + 384) * 1000) + "") :
+                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "43000", "37000", "0", "800000");
+                Config config_cpu_power = open2.isChecked() ?
+                        new Config("[SS-SKIN-XO-THERM-POWER]", "ss", "1000", "xo_therm_buf", "cluster0", "2000", "1000", "0", ((seekBar1.getProgress() + 384) * 1000) + "") :
+                        new Config("[SS-SKIN-XO-THERM-POWER]", "ss", "1000", "xo_therm_buf", "cluster0", "48000", "40000", "0", "600000");
                 Config config_gpu = open5.isChecked() ?
                         new Config("[GPU_management]", "monitor", "10000", "xo_therm_buf", "2000", "1000", "gpu", ((seekBar3.getProgress() + 300) * 1000000) + "") :
                         new Config("[GPU_management]", "monitor", "10000", "xo_therm_buf", "40000\t\t43000\t\t47000\t\t50000\t\t", "37000\t\t40000\t\t43000\t\t47000", "gpu\t\t\tgpu\t\t\tgpu\t\t\tgpu", "490000000\t450000000\t367000000\t300000000");
                 Config config_battery = new Config("[MONITOR_QUIET_THERM_BATTERY]", "monitor", "1000", "xo_therm_buf", "38000\t\t40000\t\t42000\t\t44000", "35000\t\t38000\t\t40000\t\t42000", "battery\t\tbattery\t\tbattery\t\tbattery", "0\t\t1\t\t2\t\t3");
-                //A53频率
-                for(int i=0;i<4;i++){
-
-                }
-                Config cpu_a53_freq = open4.isChecked() ?
-                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "2000", "1000", "0", ((seekBar2.getProgress() + 384) * 1000) + "") :
-                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "43000", "37000", "0", "800000");
-                //A57频率
-                Config cpu_a57_freq = open4.isChecked() ?
-                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "2000", "1000", "0", ((seekBar2.getProgress() + 384) * 1000) + "") :
-                        new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "43000", "37000", "0", "800000");
                 Config config_cpu0_close;
                 Config config_cpu1_close;
                 Config config_cpu2_close;
