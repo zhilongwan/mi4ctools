@@ -180,7 +180,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="最高频率（需重启）"
+                            android:text="最高频率"
                             android:textSize="16sp" />
 
                         <Switch
@@ -317,7 +317,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="最高频率（需重启）"
+                            android:text="最高频率"
                             android:textSize="16sp" />
 
                         <Switch
