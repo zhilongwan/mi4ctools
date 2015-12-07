@@ -67,7 +67,10 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.mac"
+            android:label="wifi mac地址修改(不区分大小写)"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" ></activity>
     </application>
 
 </manifest>
