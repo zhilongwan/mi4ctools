@@ -139,41 +139,7 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                 startActivity(new Intent(main.this, systemapp3.class));
                 break;
             case R.id.mac:
-                final String mac = RandomMacAddress.getMacAddrWithFormat(":");
-                String mac_txt = mac.replace(":", "");
-                OutputConfigFile create_config = new OutputConfigFile(this);
-                create_config.initDataMac(getResources().getString(R.string.mac0) + mac_txt + "\n" + getResources().getString(R.string.mac1) + mac_txt);
-//                CopyAssets(getResources().getString(R.string.u), getResources().getString(R.string.n2));
-                final Su_dos su_dos = new Su_dos();
-                su_dos.mac();
-                final ProgressDialog wait = ProgressDialog.show(this, null, WAIT, true, false);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        wait.dismiss();
-                        AlertDialog.Builder builder3 = new AlertDialog.Builder(main.this);
-                        builder3.setMessage(mac + " " + getResources().getString(isMIUI() ? R.string.s5 : R.string.s4));
-                        builder3.setCancelable(false);
-                        builder3.setPositiveButton(getResources().getString(isMIUI() ? (R.string.reboot) : (R.string.ok)), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                if (isMIUI()) {
-                                    su_dos.reboot();
-                                }
-                            }
-                        });
-                        if (isMIUI()) {
-                            builder3.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                        }
-                        builder3.create().show();
-                    }
-                }, 1200);
+                startActivity(new Intent(main.this, mac.class));
                 break;
             case R.id.rec_mac:
                 final Su_dos su_dos2 = new Su_dos();

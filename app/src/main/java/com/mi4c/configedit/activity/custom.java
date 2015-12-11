@@ -154,7 +154,7 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             seekBar1.setProgress(sp.getInt(SEEKBAR1, cpu1));
         }
         if (sp.getInt(BIG_BTN3, 0) == 1) {
-            open4.setChecked(true);
+            open3.setChecked(true);
             if (sp.getInt(CPU4, 0) == 0) {
                 aSwitch5.setChecked(false);
             }

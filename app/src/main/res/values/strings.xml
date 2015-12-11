@@ -13,8 +13,8 @@
     <string name="s1">在安全中心-权限管理-ROOT权限管理中打开本应用的ROOT权限。</string>
     <string name="s2">确认重启手机？</string>
     <string name="s3">确认重启至Recovery？</string>
-    <string name="s4">这是你的新wifi mac地址，重启wifi后生效。</string>
-    <string name="s5">这是你的新wifi mac地址，当前系统为MIUI系统，修改后重启才能生效，是否立刻重启？</string>
+    <string name="s4">修改完成，重启wifi后生效。</string>
+    <string name="s5">当前系统为MIUI系统，修改后重启才能生效，是否立刻重启？</string>
     <string name="s4_default">配置已还原，重启wifi后生效。</string>
     <string name="s5_default">配置已还原，当前系统为MIUI系统，修改后重启才能生效，是否立刻重启？</string>
     <string name="sure">确认</string>
