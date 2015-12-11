@@ -38,7 +38,7 @@ public class RandomMacAddress {
     }
 
     public static String getRandomMacAddrPart() {
-        String baseMacSeed = "0123456789ABCDEF";
+        String baseMacSeed = "0123456789abcdef";
         String wapsMacAddr = "";
         for (int i = 0; i < 3; i++) {
             wapsMacAddr += getRandomByteStr(baseMacSeed);
