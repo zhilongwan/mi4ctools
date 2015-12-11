@@ -4,8 +4,8 @@
     <string name="n">thermal-engine-8992.conf</string>
     <string name="mac_n">wlan_mac.bin</string>
     <string name="n2">wlan_mac.bin</string>
-    <string name="mac0">IntMacf0Address</string>
-    <string name="mac1">IntMacf1Address</string>
+    <string name="mac0">IntMacf0Address=</string>
+    <string name="mac1">IntMacf1Address=</string>
     <string name="t1">当前：系统默认</string>
     <string name="t2">当前：自定义</string>
     <string name="t3">当前：启用</string>
