@@ -5,18 +5,23 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mi4c.configedit.config.Config;
 import com.mi4c.configedit.utils.OutputConfigFile;
@@ -72,15 +77,22 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
     private int[] CPU_A53;
     private int[] CPU_A57;
     private int[] GPU;
-    private int cpu_a53_freq;
-    private int cpu_a57_freq;
-    private boolean cpu_a53_cus = false;
-    private boolean cpu_a57_cus = false;
+    private Spinner mSpinner;
+    private String couGovernors = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom);
+        mSpinner = (Spinner) findViewById(R.id.spinner);
+        List<String> mItems = su_dos.readCpuGovernors();
+        ArrayAdapter<String> _Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mItems);
+        mSpinner.setAdapter(_Adapter);
+        for(int i=0;i<mItems.size();i++){
+            if(su_dos.getCpuCurGovernor().equals(mItems.get(i))){
+                mSpinner.setSelection(i);
+            }
+        }
         sp = getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
         CPU_A53 = getResources().getIntArray(R.array.a53);
         CPU_A57 = getResources().getIntArray(R.array.a57);
@@ -148,8 +160,6 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             }
         }
         if (sp.getInt(BIG_BTN2, 0) == 1) {
-            cpu_a53_cus = true;
-            cpu_a53_freq = cpu1;
             open2.setChecked(true);
             seekBar1.setProgress(sp.getInt(SEEKBAR1, cpu1));
         }
@@ -163,8 +173,6 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
             }
         }
         if (sp.getInt(BIG_BTN4, 0) == 1) {
-            cpu_a57_cus = true;
-            cpu_a57_freq = cpu2;
             open4.setChecked(true);
             seekBar2.setProgress(sp.getInt(SEEKBAR2, cpu2));
         }
@@ -183,6 +191,18 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
         open3.setText(getResources().getString(R.string.t1));
         open4.setText(getResources().getString(R.string.t1));
         open5.setText(getResources().getString(R.string.t1));
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                couGovernors = parent.getItemAtPosition(position).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // TODO Auto-generated method stub
+            }
+        });
         open1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -333,37 +353,22 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
     private final String REBOOT = "修改完成，重启后生效，是否立刻重启？";
     private final String YES = "是";
     private final String NO = "否";
+    private ProgressDialog dialog;
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                dialog.dismiss();
+            }
+        }
+    };
+    private Su_dos su_dos = new Su_dos();
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.finished:
                 saveUI();
-                final ProgressDialog dialog = ProgressDialog.show(this, null, WAIT, true, false);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog.dismiss();
-                        AlertDialog.Builder builder = new AlertDialog.Builder(custom.this);  //先得到构造器
-                        builder.setMessage(REBOOT); //设置内容
-                        builder.setPositiveButton(YES, new DialogInterface.OnClickListener() { //设置确定按钮
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Su_dos su_dos = new Su_dos();
-                                su_dos.reboot();
-                                dialog.dismiss(); //关闭dialog
-                            }
-                        });
-                        builder.setNegativeButton(NO, new DialogInterface.OnClickListener() { //设置确定按钮
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss(); //关闭dialog
-                            }
-                        });
-                        //参数都设置完成了，创建并显示出来
-                        builder.create().show();
-                    }
-                }, 1200);
                 Config config_cpu_perf = open4.isChecked() ?
                         new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "2000", "1000", "0", ((seekBar2.getProgress() + 384) * 1000) + "") :
                         new Config("[SS-SKIN-XO-THERM-PERF]", "ss", "250", "xo_therm_buf", "cluster1", "43000", "37000", "0", "800000");
@@ -428,8 +433,17 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
                         config_ss5.output() +
                         config_junction.output() +
                         config_ss_gpu.output());
-                Su_dos su_dos = new Su_dos();
                 su_dos.move();
+                su_dos.stop();
+                dialog = ProgressDialog.show(this, null, WAIT, true, false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                        su_dos.start();
+                    }
+                }, 2500);
+                su_dos.writeCpuGovernor(couGovernors);
                 break;
         }
     }
