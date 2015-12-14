@@ -217,15 +217,6 @@
         </LinearLayout>
     </ScrollView>
 
-
-    <LinearLayout
-        android:id="@+id/adLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"></LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -241,6 +232,28 @@
         android:layout_alignParentBottom="true"
         android:gravity="center_horizontal|bottom"
         android:paddingBottom="10dp"
-        android:text="version:1.0.1" />
+        android:text="version:xxx" />
 
+    <LinearLayout
+        android:id="@+id/update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="2dp"
+        android:layout_weight="1"
+        android:background="@drawable/ripple_bg"
+        android:onClick="onClick"
+        android:visibility="gone"
+        android:padding="5dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="发现新版本！"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+    </LinearLayout>
 </RelativeLayout>

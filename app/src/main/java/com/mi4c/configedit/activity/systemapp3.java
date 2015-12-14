@@ -202,7 +202,7 @@ public class systemapp3 extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
-            viewHolder.mText.setText(appList.get(i).getAppLabel());
+            viewHolder.mText.setText(appList.get(i).getAppLabel()+" "+appList.get(i).getPkgName());
             viewHolder.icon.setImageDrawable(appList.get(i).getAppIcon());
             viewHolder.view.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -5,13 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".activity.custom">
 
-    <TextView
-        android:id="@+id/warning1"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="本功能为小米4C手机定制，其他手机请勿使用！"
-        android:textColor="#ff0000" />
+
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -24,7 +18,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+            <TextView
+                android:id="@+id/warning1"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="由于MIUI的限制，本功能在2015/12/10开发版或者2015/12/8日内测版起，重启会自动恢复系统默认配置，如果想重启也生效的话，需要到“安全中心”打开MI4C tolls的开机自启动，并且不要使用其他任何安全软件限制本软件的开机自启动。本软件在开机设置完成后自动销毁后台服务，各位不必担心占用内存。"
+                android:textColor="#ff0000" />
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -455,7 +454,7 @@
         android:layout_margin="3dp"
         android:background="@drawable/ripple_bg"
         android:onClick="onClick"
-        android:text="完成"
+        android:text="完成(无需重启)"
         android:textColor="#ffffff"
         android:textSize="14sp" />
 

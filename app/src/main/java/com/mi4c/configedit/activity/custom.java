@@ -140,6 +140,7 @@ public class custom extends AppCompatActivity implements View.OnClickListener {
         editor.putInt(SEEKBAR1, seekBar1.getProgress());
         editor.putInt(SEEKBAR2, seekBar2.getProgress());
         editor.putInt(SEEKBAR3, seekBar3.getProgress());
+        editor.putString("governors", couGovernors);
         editor.commit();
     }
 

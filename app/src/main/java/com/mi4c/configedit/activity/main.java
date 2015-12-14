@@ -8,11 +8,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,13 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mi4c.configedit.R;
+import com.mi4c.configedit.service.bootservice;
+import com.mi4c.configedit.service.tiganjietingService;
 import com.mi4c.configedit.utils.BuildProperties;
-import com.mi4c.configedit.utils.OutputConfigFile;
-import com.mi4c.configedit.utils.RandomMacAddress;
 import com.mi4c.configedit.utils.Su_dos;
 
-import net.youmi.android.banner.AdSize;
-import net.youmi.android.banner.AdView;
+import net.youmi.android.AdManager;
+import net.youmi.android.update.AppUpdateInfo;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,17 +40,12 @@ public class main extends AppCompatActivity implements View.OnClickListener {
     LinearLayout RootLL;
     ScrollView MainLL;
     private final String VERSION = "version:";
+    private AppUpdateInfo updateInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
-        // 实例化广告条
-        AdView adView = new AdView(this, AdSize.FIT_SCREEN);
-// 获取要嵌入广告条的布局
-        LinearLayout adLayout = (LinearLayout) findViewById(R.id.adLayout);
-// 将广告条加入到布局中
-        adLayout.addView(adView);
         RootLL = (LinearLayout) findViewById(R.id.rootll);
         MainLL = (ScrollView) findViewById(R.id.mainll);
         String pkName = this.getPackageName();
@@ -60,6 +56,17 @@ public class main extends AppCompatActivity implements View.OnClickListener {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                msg.what = 1;
+                msg.obj = AdManager.getInstance(main.this).syncCheckAppUpdate();
+                handler.sendMessage(msg);
+            }
+        }).start();
+        Intent service = new Intent(this, tiganjietingService.class);
+        startService(service);
     }
 
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
@@ -86,7 +93,8 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                 RunAsRooter();
                 break;
             case R.id.cpu_control:
-                startActivity(new Intent(main.this, control_main.class));
+                startActivity(new Intent(main.this, custom.class));
+//                startActivity(new Intent(main.this, control_main.class));
                 break;
             case R.id.ota_rec:
                 if (isMIUI()) {
@@ -174,9 +182,49 @@ public class main extends AppCompatActivity implements View.OnClickListener {
                     }
                 }, 1200);
                 break;
+            case R.id.update:
+                // 这里简单示例使用一个对话框来显示更新信息
+                new AlertDialog.Builder(main.this)
+                        .setTitle("发现新版本")
+                        .setMessage(updateInfo.getUpdateTips()) // 这里是版本更新信息
+                        .setNegativeButton("马上升级",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateInfo.getUrl()));
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                        Toast.makeText(main.this, "开始下载...", Toast.LENGTH_SHORT).show();
+                                        // ps：这里示例点击“马上升级”按钮之后简单地调用系统浏览器进行新版本的下载，
+                                        // 但强烈建议开发者实现自己的下载管理流程，这样可以获得更好的用户体验。
+                                    }
+                                })
+                        .setPositiveButton("下次再说",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                }).create().show();
+                break;
         }
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            updateInfo = (AppUpdateInfo) msg.obj;
+            switch (msg.what) {
+                case 1:
+                    if (updateInfo == null || updateInfo.getUrl() == null) {
+                        // 如果 AppUpdateInfo 为 null 或它的 url 属性为 null，则可以判断为没有新版本。
+                    } else {
+                        findViewById(R.id.update).setVisibility(View.VISIBLE);
+                    }
+                    break;
+            }
+        }
+    };
     private final String WAIT = "请稍候...";
     private final String SU = "su";
     private final String EXIT = "exit\n";

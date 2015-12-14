@@ -83,11 +83,14 @@ public class Su_dos {
     public boolean writeCpuGovernor(String governor) {
         DataOutputStream os = null;
         byte[] buffer = new byte[256];
-        String command = "echo " + governor + " > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor";
+        String command = "echo " + governor + " > /sys/devices/system/cpu/cpu";
+        String command2 = "/cpufreq/scaling_governor";
         try {
             Process process = Runtime.getRuntime().exec("su");
             os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes(command + "\n");
+            for (int i = 0; i < 6; i++) {
+                os.writeBytes(command + i + command2 + "\n");
+            }
             os.writeBytes("exit\n");
             os.flush();
             process.waitFor();

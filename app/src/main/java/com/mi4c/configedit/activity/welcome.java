@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.mi4c.configedit.R;
 
@@ -14,6 +16,9 @@ import net.youmi.android.AdManager;
 import net.youmi.android.spot.SplashView;
 import net.youmi.android.spot.SpotDialogListener;
 import net.youmi.android.spot.SpotManager;
+import net.youmi.android.update.AppUpdateInfo;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -35,7 +40,7 @@ public class welcome extends Activity implements View.OnClickListener {
                 public void run() {
                     ad();
                 }
-            }, 1000);
+            }, 1700);
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -62,14 +67,9 @@ public class welcome extends Activity implements View.OnClickListener {
 
                     @Override
                     public void onShowFailed() {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Intent intent = new Intent(welcome.this, main.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }, 2000);
+                        Intent intent = new Intent(welcome.this, main.class);
+                        startActivity(intent);
+                        finish();
                     }
 
                     @Override
@@ -82,7 +82,7 @@ public class welcome extends Activity implements View.OnClickListener {
 
                     }
                 });
-        splashView.setShowReciprocal(false);
+        splashView.setShowReciprocal(true);
         splashView.hideCloseBtn(true);
         Intent intent = new Intent(this, main.class);
         splashView.setIntent(intent);
